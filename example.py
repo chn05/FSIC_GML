@@ -9,7 +9,7 @@ if __name__ == '__main__':
     warnings.filterwarnings('ignore')
     begin_time = time.time()
     # data preparationasd
-    path = '/home/ssd1/chn/easy-all/result_5.22/code/FSIC_GML_git/pkl/'
+    path = './'
     with open(path+'v_feature_p.pkl', 'rb') as v:
         variables = pickle.load(v)
     with open(path+'f_feature_p.pkl', 'rb') as f:
