@@ -260,7 +260,7 @@ class GML:
                 for id in var_id:
                     self.variables[id]['inferenced_probability'] = ns_inference.factorGraphs[0].marginals[var_map[id]]
             else:
-                inferenced_probability = ns_inference.factorGraphs[0].marginals.reshape((-1, self.classNum))#真推概率
+                inferenced_probability = ns_inference.factorGraphs[0].marginals.reshape((-1, self.classNum))
                 for id in var_id:
                     for c in range(self.classNum):
                         if 'inferenced_probability' not in self.variables[var_id].keys():
@@ -306,7 +306,7 @@ class GML:
         # If labelnum is less than the number of variables passed in, mark top_n
         if len(var_id_list) >= self.top_n:
             var = list()
-            min_var_list = heapq.nsmallest(self.top_n, entropy_list, key=lambda x: x[1])  # 选出熵最小的变量
+            min_var_list = heapq.nsmallest(self.top_n, entropy_list, key=lambda x: x[1])  
             for mv in min_var_list:
                 label_list.append(mv[0])
         # Otherwise mark all the variables passed in
