@@ -117,8 +117,8 @@ class EvidentialSupport:
 
     def separate_feature_value(self,c):
       
-        binary_featureid_set = set() # 双因子集
-        each_feature_easys = list() # 每一个easy
+        binary_featureid_set = set() 
+        each_feature_easys = list() 
         self.features_easys.clear()
         for feature in self.features:
             if feature['Association_category'] != c : continue
@@ -145,13 +145,13 @@ class EvidentialSupport:
                 # each_feature_easys.clear()
                 for var_id, value in feature['weight'].items():
                     if type(var_id) ==tuple:
-                        binary_featureid_set.add(feature['feature_id']) # 判断两个是不是证据集变量中
+                        binary_featureid_set.add(feature['feature_id']) 
                         if self.variables[var_id[0]]['is_evidence'] and self.variables[var_id[1]]['is_evidence']:
-                            if self.variables[var_id[0]]['label'] == self.variables[var_id[1]]['label']: # 判断是否属于同一类
-                                each_feature_easys.append([value[1], 1]) # 将两个证据集变量为同类的特征加入进去[特征，10]
+                            if self.variables[var_id[0]]['label'] == self.variables[var_id[1]]['label']:
+                                each_feature_easys.append([value[1], 1]) 
                             else :
-                                each_feature_easys.append([value[1], 0])#将两个证据集变量不为同类的特征加入进去[特征，-10]
-                self.features_easys[feature['feature_id']] = copy(each_feature_easys) # 将证据变量之间的特征加进去
+                                each_feature_easys.append([value[1], 0])
+                self.features_easys[feature['feature_id']] = copy(each_feature_easys) 
 
 
     def influence_modeling(self,update_feature_set):
@@ -227,7 +227,7 @@ class EvidentialSupport:
       
         cur_update_set = update_feature_set.copy() #
 
-        self.observed_variables_set, self.poential_variables_set = gml_utils.separate_variables(self.variables) # 获取样本证据变量和隐变量
+        self.observed_variables_set, self.poential_variables_set = gml_utils.separate_variables(self.variables) 
         self.separate_feature_value(c)
         if update_feature_set == None or (type(update_feature_set) ==set() and len(update_feature_set) == 0):
             update_feature_set = set()
@@ -347,7 +347,7 @@ class EvidentialSupport:
                 del_set.add(fid)
         cur_update_set -= del_set
         self.influence_modeling(cur_update_set)
-        binary_approximate_weight = np.zeros(shape=(len(self.variables),self.classNum), dtype=np.float) # 赋给binary_approximate_weight全为0的矩阵[100,5]
+        binary_approximate_weight = np.zeros(shape=(len(self.variables),self.classNum), dtype=np.float) 
         p_es = np.ones(shape=(len(self.variables),))
         p_unes = np.ones(shape=(len(self.variables),))
 
