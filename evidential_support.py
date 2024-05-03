@@ -6,23 +6,17 @@ from sklearn.linear_model import LinearRegression
 import logging
 import numpy as np
 
-# import global_var
+
 import gml_utils
 from pyds import MassFunction
-# from global_var import LESS_CLUSTER,FACTOR_NAME2ID
+
 import math
 import pickle
 
 class Regression:
-    '''
-    Calculate evidence support by linear regression
-    '''
+   
     def __init__(self, evidences, n_job, effective_training_count_threshold = 2,para=None,factor_type='unary'):
-        '''
-        @param evidences:
-        @param n_job:
-        @param effective_training_count_threshold:
-        '''
+     
         self.para = para
         self.effective_training_count = max(2, effective_training_count_threshold)
         self.n_job = n_job
@@ -53,17 +47,7 @@ class Regression:
                         self.sample_weight_list.append(sample_weight)
                     else:
                         self.sample_weight_list.append(1)
-        # elif factor_type == 'bert':
-        #     if self.balance_weight_y1_count > 0 and self.balance_weight_y0_count > 0:
-        #         self.sample_weight_list = list()
-        #         sample_weight = float(self.balance_weight_y0_count) / self.balance_weight_y1_count
-        #         sample_weight *=0.5
-        #         for y in self.Y:
-        #             if y[0] > 0:
-        #                 self.sample_weight_list.append(sample_weight)
-        #             else:
-        #                 self.sample_weight_list.append(1)
-        #         print('bert Weight', sample_weight)
+       
         elif factor_type == 'binary':
 
             self.balance_weight_y0_count = 0
@@ -132,10 +116,7 @@ class EvidentialSupport:
         self.varname2varid = {}
 
     def separate_feature_value(self,c):
-        '''
-        Select the easy feature value of each feature for linear regression
-        :return:选择每个特征的easy特征值进行线性回归
-        '''
+      
         binary_featureid_set = set() # 双因子集
         each_feature_easys = list() # 每一个easy
         self.features_easys.clear()
@@ -172,14 +153,9 @@ class EvidentialSupport:
                                 each_feature_easys.append([value[1], 0])#将两个证据集变量不为同类的特征加入进去[特征，-10]
                 self.features_easys[feature['feature_id']] = copy(each_feature_easys) # 将证据变量之间的特征加进去
 
-    # 用到了
-    def influence_modeling(self,update_feature_set):
-        '''
-        Perform linear regression on the updated feature
-        @param update_feature_set:影响力建模
-        @return:
-        '''
 
+    def influence_modeling(self,update_feature_set):
+        
         if len(update_feature_set) > 0:
             self.init_tau_and_alpha(update_feature_set)
             for feature_id in update_feature_set:
@@ -192,11 +168,7 @@ class EvidentialSupport:
                         self.features[feature_id]['regression'] = Regression(self.features_easys[feature_id], n_job=self.n_job,factor_type='binary')
 
     def init_tau_and_alpha(self, feature_set):
-        '''
-        Calculate tau and alpha for a given feature
-        @param feature_set:
-        @return:
-        '''
+     
         if type(feature_set) != list and type(feature_set) != set:
             raise ValueError('feature_set must be set or list')
         else:
@@ -252,12 +224,7 @@ class EvidentialSupport:
                     self.features[feature_id]["alpha"] = 0.5
 
     def evidential_support_by_regression(self,variable_set,update_feature_set,c=0):
-        '''
-        计算给定隐变量集合的Evidential Support,适用于ER
-        @param variable_set:
-        @param update_feature_set:
-        @return:
-        '''
+      
         cur_update_set = update_feature_set.copy() #
 
         self.observed_variables_set, self.poential_variables_set = gml_utils.separate_variables(self.variables) # 获取样本证据变量和隐变量
@@ -323,7 +290,7 @@ class EvidentialSupport:
             confidence = np.ones_like(data)
             confidence[np.where(residuals > 0)] = (1 - t.sf(tvalue, (Ns - 2)) * 2)[np.where(residuals > 0)]
             confidence = confidence * zero_confidence
-            evidential_support = (1 + confidence) / 2  # 正则化
+            evidential_support = (1 + confidence) / 2  
 
             csr_evidential_support = csr_matrix((evidential_support, (row, col)), shape=(len(self.variables), len(mapping2)))
             for index, var in enumerate(self.variables):
@@ -353,7 +320,7 @@ class EvidentialSupport:
                 if 'approximate_probability' not in var.keys():
                     var['approximate_probability'] = [.0] * self.classNum
                 if 'approximate_weight' not in var.keys():
-                    var['approximate_weight'] = [.0] * self.classNum # 赋值为5个0
+                    var['approximate_weight'] = [.0] * self.classNum 
 
                 var['approximate_weight'][c] = approximate_weight[index]
 
@@ -428,7 +395,7 @@ class EvidentialSupport:
                             p_unes[vid2] *= (1 - evidential_support)
 
         for index, var in enumerate(self.variables):
-            if 'approximate_weight' not in var.items():
+            if 'approximate_weight' not in var.keys():
                 var['approximate_weight'] = [.0] * self.classNum
             var['approximate_weight'] += binary_approximate_weight[index]
 
@@ -447,10 +414,7 @@ class EvidentialSupport:
 
 
     def create_csr_matrix(self,c):
-        '''
-        创建稀疏矩阵存储所有variable的所有featureValue，用于后续计算Evidential Support
-        :return:
-        '''
+ 
         data = list()
         row = list()
         col = list()
