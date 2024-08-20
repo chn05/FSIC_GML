@@ -103,15 +103,15 @@ class ConstructSubgraph:
             fmap[fmp_index]["vid"] = var_map[elem[1][0]]
             fmap[fmp_index]["theta"] = 1.0
             fmap[fmp_index]["x"] =self.features[elem[0]]['weight'][(elem[1][0],elem[1][1])][1]
-            fmap[fmp_index]["dense_equal_to"] = self.variables[elem[1][1]]['true_label'] if var_id == elem[1][0] else \
-            self.variables[elem[1][0]]['true_label']
+            fmap[fmp_index]["dense_equal_to"] = self.variables[elem[1][1]]['label'] if var_id == elem[1][0] else \
+            self.variables[elem[1][0]]['label']
 
             fmp_index += 1
 
             fmap[fmp_index]["vid"] = var_map[elem[1][1]]
             fmap[fmp_index]["theta"] = 1.0
             fmap[fmp_index]["x"] = self.features[elem[0]]['weight'][(elem[1][0],elem[1][1])][1]
-            fmap[fmp_index]["dense_equal_to"] = self.variables[elem[1][1]]['true_label'] if var_id ==elem[1][0] else self.variables[elem[1][0]]['true_label']
+            fmap[fmp_index]["dense_equal_to"] = self.variables[elem[1][1]]['label'] if var_id ==elem[1][0] else self.variables[elem[1][0]]['label']
             fmp_index += 1
             factor_index += 1
             edge_index += 1
