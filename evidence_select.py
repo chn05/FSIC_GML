@@ -73,6 +73,9 @@ class EvidenceSelect:
                 for vid in weight.keys():
                     if self.variables[vid]['is_evidence'] == True:
                         unary_evidence_set.add(vid)
+                        connected_var_set.add(vid)
+                        connected_feature_set.add(feature_id)
+                        connected_edge_set.add((feature_id,vid))
                     else:
                         unary_potential_set.add(vid)
 
